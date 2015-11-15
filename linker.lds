@@ -24,6 +24,7 @@ SECTIONS
       AT( 0xF0000 )
 	{
 	  *(.Init16);
+	  *(.Utils16);
 	}
 	
   /*Init32 section @VMA = 0xF4000*/
