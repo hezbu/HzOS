@@ -1,0 +1,6 @@
+BITS 32
+GLOBAL Init32
+
+SECTION .Init32
+Init32:
+	hlt
