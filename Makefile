@@ -18,20 +18,22 @@ $(OUTPUT): $(LINKER_DEPENDENCIES)
 	@echo Generando $@...
 	ld -z max-page-size=0x01000 --oformat=binary -m elf_i386 -T $(LINKER_SCRIPT) -e $(LINKER_ENTRY_POINT) $(LINKER_OBJECTS) -o ./bin/$(OUTPUT)
 
+createDir:
+	mkdir -p ./bin
 
-init16: ./src/init16.asm
+init16: ./src/init16.asm createDir
 	@echo Generando $@.asm...
 	$(ASM_COMPILER) $(ASM_COMPILER_OPTIONS) ./src/$@.asm -o ./bin/$@.o
 
-init32: ./src/init32.asm
+init32: ./src/init32.asm createDir
 	@echo Generando $@.asm...
 	$(ASM_COMPILER) $(ASM_COMPILER_OPTIONS) ./src/$@.asm -o ./bin/$@.o
 
-utils16: ./src/utils16.asm
+utils16: ./src/utils16.asm createDir
 	@echo Generando $@.asm...
 	$(ASM_COMPILER) $(ASM_COMPILER_OPTIONS) ./src/$@.asm -o ./bin/$@.o
 
-reset:  ./src/reset.asm
+reset:  ./src/reset.asm createDir
 	@echo Generando $@.asm...
 	$(ASM_COMPILER) $(ASM_COMPILER_OPTIONS) ./src/$@.asm -o ./bin/$@.o
 bless:
