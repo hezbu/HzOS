@@ -4,15 +4,33 @@ GLOBAL Init16
 
 ;Etiquetas Externas
 EXTERN Enable_GateA20
+EXTERN STACK_16_BIT_START
 
-%define ROM_SIZE		      (64*1024)
-%define ROM_START_HI_DWORD	0x000F
-%define ROM_START_LO_DWORD	0x0000
-%define RESET_VECTOR	      0xfff0
 
 SECTION .Init16
 Init16:
       
-      call 
+      ;Seteo de la Stack Selector
+      xor ax, ax
+      mov ss, ax
+
+      ;Seteo de la Stack Pointer
+      xor ax, ax
+      mov sp, STACK_16_BIT_START
+
+
+
+      ;Vamos a copiar la ROM, por lo que paso el parametro count
+      push dword (ROM_SIZE -1)
+      
+      push word ROM_SRC_START_LO
+      push word ROM_SRC_START_HI
+      
+      
+      push word ROM_DST_START_LO
+      push word ROM_DST_START_HI
+
+
+      call memcpy_c                 ; Llamos al memcpy de C
       call Enable_GateA20 		;Se llama a Enable_GateA20 para poder acceder a direccione spor arriba del primer mega
       hlt

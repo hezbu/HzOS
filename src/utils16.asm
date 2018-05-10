@@ -1,5 +1,6 @@
 BITS 16
-EXTERN Enable_GateA20
+GLOBAL Enable_GateA20
+GLOBAL Memcpy
 
 SECTION .Utils16
 Enable_GateA20:
@@ -21,7 +22,7 @@ Enable_GateA20:
 ;
 ;void * memcopy(void *destino, const void *origen, unsigned int num_bytes);
 
-memcpy:
+Memcpy:
 	
 	push ebp        ; Genero stack frame para recuperar los parametros
 	mov ebp, esp    ; Resguardo el ESP
@@ -46,12 +47,12 @@ memcpy:
 	mov ecx, [ebp+14]	;  obtengo la cantidad de bytes a copiar
 
 	
-	memcpy_loop:
+	Memcpy_loop:
 		mov ax,[cs:si]
 		mov [es:di],ax
 		add di,2
 		add si,2
-	loop memcpy_loop
+	loop Memcpy_loop
 
 
 	pop dword ecx           ;Recupero los valores de la funcion caller

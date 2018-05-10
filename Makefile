@@ -1,12 +1,14 @@
 .PHONY:clean edit bless bochs
 
-LINKER_OBJECTS = ./bin/init16.o ./bin/utils16.o ./bin/init32.o ./bin/reset.o
-LINKER_SCRIPT = ./linker.lds
-LINKER_DEPENDENCIES = init16 init32 reset utils16
+LINKER_OBJECTS = ./bin/init16.o ./bin/utils16_asm.o ./bin/init32.o ./bin/reset.o \
+./bin/utils16_c.o	
+
+LINKER_SCRIPT = ./sup/linker.lds
+LINKER_DEPENDENCIES = init16 init32 reset utils16_asm utils16_c
 LINKER_ENTRY_POINT = Reset
 
 C_COMPILER = gcc
-C_COMPILER_OPTIONS= -m32 -c
+C_COMPILER_OPTIONS= -m32 -c -fno-builtin
 
 ASM_COMPILER = nasm
 ASM_COMPILER_OPTIONS = -f elf32
@@ -29,9 +31,13 @@ init32: ./src/init32.asm createDir
 	@echo Generando $@.asm...
 	$(ASM_COMPILER) $(ASM_COMPILER_OPTIONS) ./src/$@.asm -o ./bin/$@.o
 
-utils16: ./src/utils16.asm createDir
-	@echo Generando $@.asm...
-	$(ASM_COMPILER) $(ASM_COMPILER_OPTIONS) ./src/$@.asm -o ./bin/$@.o
+utils16_asm: ./src/utils16.asm createDir
+	@echo Generando utils16.asm...
+	$(ASM_COMPILER) $(ASM_COMPILER_OPTIONS) ./src/utils16.asm -o ./bin/$@.o
+
+utils16_c: ./src/utils16.c createDir
+	@echo Generando utils16.c...
+	$(C_COMPILER) $(C_COMPILER_OPTIONS) ./src/utils16.c -o ./bin/$@.o
 
 reset:  ./src/reset.asm createDir
 	@echo Generando $@.asm...
