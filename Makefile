@@ -37,7 +37,7 @@ utils16_asm: ./src/utils16.asm createDir
 
 utils16_c: ./src/utils16.c createDir
 	@echo Generando utils16.c...
-	$(C_COMPILER) $(C_COMPILER_OPTIONS) ./src/utils16.c -o ./bin/$@.o
+	$(C_COMPILER) $(C_COMPILER_OPTIONS) ./src/utils16.c -o ./bin/$@.o 
 
 reset:  ./src/reset.asm createDir
 	@echo Generando $@.asm...
