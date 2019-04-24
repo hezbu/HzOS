@@ -46,7 +46,7 @@ SECTIONS
   .Tables 0xF3000 :   
       AT( 0xF3000 )
 	{
-	  *(.Tables);
+	  *(.SysTable);
 	}
 
   /*Init32 section @VMA = 0xF4000*/

@@ -60,7 +60,7 @@
 GLOBAL GDT
 GLOBAL lgdtr
 
-SECTION .Tables
+SECTION .SysTable
 GDT:
 	NULL_SEL    equ $-GDT
 	  dq 0x0					; Selector NULO, todo en 0 (los 64bits)
@@ -74,7 +74,18 @@ GDT:
 	  							; Los 4BITS inferiores corresponden a los últimos 4 bits del 
 	  							; límite (16-19), este mide 20BITS en total.
 
-	  db 0						; Base (24-31)
+	  db 0						; Base (24-31)	  
+	CS_SEL      equ $-GDT
+      dw 0xffff                 ; Primeros 16BITS correspondientes al Límite del Segmento
+      dw 0x0000                 ; Primeros 16BITS correspondientes a la Base (0-15)
+      db 0x00                   ; Base (16-23)
+      db 0x99                   ; Byte de Acceso 
+
+      db 0xcf                   ; Los 4BITS superiores corresponden a los flags,    
+                                ; Los 4BITS inferiores corresponden a los últimos 4 bits del 
+                                ; límite (16-19), este mide 20BITS en total.
+
+      db 0                      ; Base (24-31)
 	GDT_LENGTH  equ $-GDT
 
 lgdtr:							; GDTR
