@@ -1,20 +1,24 @@
-BITS 16
+USE16
 ;Etiquetas Globales
 GLOBAL Init16
 
 ;Etiquetas Externas
 EXTERN Enable_GateA20
 EXTERN STACK_16_BIT_START
-EXTERN ROM_SRC_START_LO
-EXTERN ROM_SRC_START_HI
-EXTERN ROM_DST_START_LO
-EXTERN ROM_DST_START_HI
-EXTERN ROM_SIZE
-EXTERN memcpy_c
+EXTERN Init32
+EXTERN GDT
+EXTERN lgdtr
 
 SECTION .Init16
 Init16:
       
+      test eax, 0x0             	; Test para verificar que el uP no este en fallo
+  	jne ..@fault_end
+
+   	xor eax, eax				; Invalidar TLB ?????????????????
+   	mov cr3, eax
+
+
       ;Seteo de la Stack Selector
       xor ax, ax
       mov ss, ax
@@ -22,20 +26,18 @@ Init16:
       ;Seteo de la Stack Pointer
       xor ax, ax
       mov sp, STACK_16_BIT_START
+      xchg bx, bx
 
 
 
-      ;Vamos a copiar la ROM, por lo que paso el parametro count
-      push dword (ROM_SIZE -1)
-      
-      push word ROM_SRC_START_LO
-      push word ROM_SRC_START_HI
-      
-      
-      push word ROM_DST_START_LO
-      push word ROM_DST_START_HI
-
-
-      call memcpy_c                 ; Llamos al memcpy de C
       call Enable_GateA20 		;Se llama a Enable_GateA20 para poder acceder a direccione spor arriba del primer mega
-      hlt
+      xchg bx, bx
+      jmp Init32
+
+
+
+      ..@fault_end:
+	xchg bx,bx					; Magic Breakpoint
+	mov eax, 0x09 				; Return Value
+	hlt
+	jmp ..@fault_end

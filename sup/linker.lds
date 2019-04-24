@@ -29,6 +29,11 @@ SECTIONS
 
   ROM_SIZE            = 65535;
 
+  .eh_frame 0x8000 :
+  {
+    *(.eh_frame);
+  }
+
   /*Init16 section @VMA = 0xF0000*/
   .Init16 0xF0000 :   
       AT( 0xF0000 )
@@ -37,11 +42,20 @@ SECTIONS
 	  *(.Utils16);
 	}
 	
+/*Init32 section @VMA = 0xF4000*/
+  .Tables 0xF3000 :   
+      AT( 0xF3000 )
+	{
+	  *(.Tables);
+	}
+
   /*Init32 section @VMA = 0xF4000*/
   .Init32 0xF4000 :   
       AT( 0xF4000 )
 	{
 	  *(.Init32);
+	  *(.Utils32);
+
 	}
 	
   /*Reset section @VMA = 0xFFFF0*/
