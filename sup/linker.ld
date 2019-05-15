@@ -27,11 +27,10 @@
   RESET_VECTOR_START             = 0xFFFFFFF0;
   RESET_VECTOR_LEN               = 0x0000FFF0;
 
-  ROM_SRC_START_LO      = 0x00000000;
-  ROM_SRC_START_HI      = 0x0000FFFF;
+  ROM_SRC_START         = 0xFFFF0000;
 
-  ROM_DST_START_LO      = 0x00002000;
-  ROM_DST_START_HI      = 0x00000000;
+  ROM_DST_START         = 0x00002000;
+  
 
 
 MEMORY
@@ -53,10 +52,7 @@ MEMORY
 SECTIONS
 {
   
-   .eh_frame 0x8000:
-   {
-        *(.eh_frame)
-   }
+   
 
    .rom :
     {
@@ -65,6 +61,7 @@ SECTIONS
         *(.SysTables);
         *(.Init32);
 	      *(.Utils32);
+        *(.eh_frame)
     } > ROM
 
 

@@ -18,7 +18,7 @@ OUTPUT = bios.bin
 
 $(OUTPUT): $(LINKER_DEPENDENCIES)
 	@echo Generando $@...
-	ld -z max-page-size=0x01000 --oformat=binary -m elf_i386 -T $(LINKER_SCRIPT) -e $(LINKER_ENTRY_POINT) $(LINKER_OBJECTS) -o ./bin/$(OUTPUT)
+	ld -z max-page-size=0x01000 --oformat=binary -m elf_i386 -T $(LINKER_SCRIPT) -e $(LINKER_ENTRY_POINT) $(LINKER_OBJECTS) -o ./bin/$(OUTPUT) -Map ./sup/bios.map
 
 createDir:
 	mkdir -p ./bin

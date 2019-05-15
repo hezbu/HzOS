@@ -1,0 +1,76 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+ROM              0x00000000ffff0000 0x000000000000fff0 xr
+RESET_VECTOR     0x00000000fffffff0 0x0000000000000010 xr
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000000001000                STACK_16_BIT_START = 0x1000
+                0x0000000000001000                STACK_16_BIT_LEN = 0x1000
+                0x00000000ffff0000                ROM_START = 0xffff0000
+                0x000000000000fff0                ROM_LEN = 0xfff0
+                0x00000000fffffff0                RESET_VECTOR_START = 0xfffffff0
+                0x000000000000fff0                RESET_VECTOR_LEN = 0xfff0
+                0x00000000ffff0000                ROM_SRC_START = 0xffff0000
+                0x0000000000002000                ROM_DST_START = 0x2000
+
+.rom            0x00000000ffff0000      0x190
+ *(.Init16)
+ .Init16        0x00000000ffff0000       0x4b ./bin/init16.o
+                0x00000000ffff0000                Init16
+ *(.Utils16)
+ .Utils16       0x00000000ffff004b       0x8b ./bin/utils16_asm.o
+                0x00000000ffff004b                Enable_GateA20
+                0x00000000ffff009f                Memcpy
+ *(.SysTables)
+ .SysTables     0x00000000ffff00d6       0x1e ./bin/gdt16.o
+                0x00000000ffff00d6                GDT
+                0x00000000ffff00ee                lgdtr
+ *(.Init32)
+ .Init32        0x00000000ffff00f4       0x1b ./bin/init32.o
+                0x00000000ffff00f4                Init32
+ *(.Utils32)
+ .Utils32       0x00000000ffff010f       0x48 ./bin/utils32_c.o
+                0x00000000ffff010f                __memcpy_c
+ *(.eh_frame)
+ *fill*         0x00000000ffff0157        0x1 
+ .eh_frame      0x00000000ffff0158       0x38 ./bin/utils32_c.o
+
+.text           0x00000000ffff0190        0x0
+ .text          0x00000000ffff0190        0x0 ./bin/utils16_c.o
+ .text          0x00000000ffff0190        0x0 ./bin/utils32_c.o
+
+.rst            0x00000000fffffff0       0x10
+ *(.Reset)
+ .Reset         0x00000000fffffff0       0x10 ./bin/reset.o
+                0x00000000fffffff0                Reset
+LOAD ./bin/init16.o
+LOAD ./bin/utils16_asm.o
+LOAD ./bin/init32.o
+LOAD ./bin/reset.o
+LOAD ./bin/utils16_c.o
+LOAD ./bin/utils32_c.o
+LOAD ./bin/gdt16.o
+OUTPUT(./bin/bios.bin binary)
+
+.data           0x0000000100000000        0x0
+ .data          0x0000000100000000        0x0 ./bin/utils16_c.o
+ .data          0x0000000100000000        0x0 ./bin/utils32_c.o
+
+.bss            0x0000000100000000        0x0
+ .bss           0x0000000100000000        0x0 ./bin/utils16_c.o
+ .bss           0x0000000100000000        0x0 ./bin/utils32_c.o
+
+.comment        0x0000000000000000       0x6c
+ .comment       0x0000000000000000       0x36 ./bin/utils16_c.o
+ .comment       0x0000000000000036       0x36 ./bin/utils32_c.o
+
+.note.GNU-stack
+                0x0000000000000000        0x0
+ .note.GNU-stack
+                0x0000000000000000        0x0 ./bin/utils16_c.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 ./bin/utils32_c.o
