@@ -3,7 +3,7 @@
 LINKER_OBJECTS = ./bin/init16.o ./bin/utils16_asm.o ./bin/init32.o ./bin/reset.o \
 ./bin/utils16_c.o ./bin/utils32_c.o	./bin/gdt16.o
 
-LINKER_SCRIPT = ./sup/linker.lds
+LINKER_SCRIPT = ./sup/linker.ld
 LINKER_DEPENDENCIES = init16 init32 reset utils16_asm utils32_c utils16_c gdt16
 LINKER_ENTRY_POINT = Reset
 
