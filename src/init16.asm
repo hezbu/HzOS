@@ -30,11 +30,9 @@ Init16:
       ;Seteo de la Stack Pointer
       xor ax, ax
       mov sp, STACK_16_BIT_START
-      xchg bx, bx
 
 
       call Enable_GateA20 		;Se llama a Enable_GateA20 para poder acceder a direcciones por arriba del primer mega
-      xchg bx, bx
 
       ;IMPORTANT NOTE: instructions that make use
       ;                of 32-bit addressings from
