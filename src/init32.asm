@@ -4,8 +4,10 @@ EXTERN ROM_SRC_START_LO
 EXTERN ROM_SRC_START_HI
 EXTERN ROM_DST_START_LO
 EXTERN ROM_DST_START_HI
-EXTERN ROM_SIZE
+EXTERN ROM_LEN
 EXTERN memcpy_c
+EXTERN lgdtr
+EXTERN GDT
 
 SECTION .Init32
 USE32
@@ -13,7 +15,7 @@ Init32:
 
 
       ;Vamos a copiar la ROM, por lo que paso el parametro count
-      push (ROM_SIZE -1)
+      push (ROM_LEN + 16 -1)
       
       push ROM_SRC_START_LO
       push ROM_SRC_START_HI
@@ -21,6 +23,6 @@ Init32:
       push ROM_DST_START_LO
       push ROM_DST_START_HI
 
-	  call memcpy_c
+	    ; call memcpy_c
 
 	hlt
