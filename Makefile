@@ -1,8 +1,8 @@
 .PHONY:clean edit bless bochs
 
-LINKER_OBJECTS = ./bin/init16.o ./bin/init32.o ./bin/reset.o
+LINKER_OBJECTS = ./bin/init16.o ./bin/reset.o
 LINKER_SCRIPT = ./linker.lds
-LINKER_DEPENDENCIES = init16 init32 reset
+LINKER_DEPENDENCIES = init16 reset
 LINKER_ENTRY_POINT = Reset
 OUTPUT = bios.bin 
 
@@ -13,14 +13,12 @@ $(OUTPUT): $(LINKER_DEPENDENCIES)
 
 
 init16: ./src/init16.asm
-	@echo Generando $@.asm...
-	nasm -f elf32 ./src/$@.asm -o ./bin/$@.o
-
-init32: ./src/init32.asm
+	mkdir -p ./bin
 	@echo Generando $@.asm...
 	nasm -f elf32 ./src/$@.asm -o ./bin/$@.o
 
 reset:  ./src/reset.asm
+	mkdir -p ./bin
 	@echo Generando $@.asm...
 	nasm -f elf32 ./src/$@.asm -o ./bin/$@.o
 bless:

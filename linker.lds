@@ -20,22 +20,15 @@ SECTIONS
   */
     
   /*Init16 section @VMA = 0xF0000*/
-  .Init16 0xF0000 :   
-      AT( 0xF0000 )
+  .Init16 0xFFFFF0000 :   
+      AT( 0xFFFFF0000 )
 	{
 	  *(.Init16);
 	}
-	
-  /*Init32 section @VMA = 0xF4000*/
-  .Init32 0xF4000 :   
-      AT( 0xF4000 )
-	{
-	  *(.Init32);
-	}
-	
+		
   /*Reset section @VMA = 0xFFFF0*/
-  .Reset 0xFFFF0 :   
-      AT( 0xFFFF0 )
+  .Reset 0xFFFFFFFF0 :   
+      AT( 0xFFFFFFFF0 )
 	{
 	  *(.Reset);
 	}
